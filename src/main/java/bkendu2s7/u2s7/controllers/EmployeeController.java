@@ -32,12 +32,6 @@ public class EmployeeController {
         return es.findById(id);
     }
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    private Employee saveEmployee(@RequestBody @Validated EmployeeDTO payload, BindingResult validation) {
-        if (validation.hasErrors()) throw new BadRequestException(validation.getAllErrors());
-        else return es.save(payload);
-    }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

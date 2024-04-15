@@ -75,5 +75,8 @@ public class EmployeeService {
         return found;
     }
 
+    public Employee findByEmail(String email){
+        return eDAO.findByEmail(email).orElseThrow(() -> new NotFoundException("Dipendente non trovato"));
+    }
 
 }

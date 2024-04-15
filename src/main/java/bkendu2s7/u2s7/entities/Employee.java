@@ -22,6 +22,7 @@ public class Employee {
     private String name;
     private String surname;
     private String email;
+    private String password;
     private String avatar;
     @OneToMany(mappedBy = "employee")
     @JsonIgnore
