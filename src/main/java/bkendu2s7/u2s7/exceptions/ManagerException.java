@@ -37,4 +37,10 @@ public class ManagerException {
         ex.printStackTrace();
         return new ErrorResponseDTO("Problema lato server! Giuro che lo risolveremo presto!", LocalDateTime.now());
     }
+
+    @ExceptionHandler(UnauthorizedException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ErrorResponseDTO handleUnauthorized(UnauthorizedException ex){
+        return new ErrorResponseDTO(ex.getMessage(), LocalDateTime.now());
+    }
 }

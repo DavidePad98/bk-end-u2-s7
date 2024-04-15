@@ -36,6 +36,7 @@ public class EmployeeService {
                 emp.name(),
                 emp.surname(),
                 emp.email(),
+                emp.password(),
                 "https://ui-avatars.com/api/?name=" + emp.name() + "+" + emp.surname()
         );
                 return eDAO.save(newEmployee);

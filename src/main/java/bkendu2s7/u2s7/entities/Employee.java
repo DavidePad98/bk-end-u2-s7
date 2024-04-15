@@ -28,11 +28,12 @@ public class Employee {
     @JsonIgnore
     private List<Device> devicesAssigned;
 
-    public Employee(String username, String name, String surname, String email, String avatar) {
+    public Employee(String username, String name, String surname, String email, String password, String avatar) {
         this.username = username;
         this.name = name;
         this.surname = surname;
         this.email = email;
+        this.password = password;
         this.avatar = avatar;
     }
 
