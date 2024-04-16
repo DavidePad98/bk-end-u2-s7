@@ -57,9 +57,6 @@ public class EmployeeController {
 
     @GetMapping("/me")
     public Employee getProfile(@AuthenticationPrincipal Employee currentAuthenticatedEmployee){
-        // @AuthenticationPrincipal mi consente di accedere all'utente attualmente autenticato
-        // Questa cosa è resa possibile dal fatto che precedentemente a questo endpoint (ovvero nel JWTFilter)
-        // ho estratto l'id dal token e sono andato nel db per cercare l'utente ed "associarlo" a questa richiesta
         return currentAuthenticatedEmployee;
     }
 

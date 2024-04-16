@@ -31,7 +31,7 @@ public class Employee implements UserDetails {
     private String password;
     private String avatar;
     @Enumerated(EnumType.STRING)
-    private Role role;
+    private Role role = Role.USER;
     @OneToMany(mappedBy = "employee")
     @JsonIgnore
     private List<Device> devicesAssigned;
@@ -43,7 +43,6 @@ public class Employee implements UserDetails {
         this.email = email;
         this.password = password;
         this.avatar = avatar;
-        this.role = role;
     }
 
     @Override

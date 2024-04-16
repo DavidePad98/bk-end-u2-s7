@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -38,28 +39,22 @@ public class DeviceController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     private void deleteDevice(@PathVariable long id) {
         ds.findByIdAndDelete(id);
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     private Device updateDevice(@PathVariable long id, @RequestBody @Validated DeviceDTO payload, BindingResult validation) {
         if (validation.hasErrors()) throw new BadRequestException(validation.getAllErrors());
         else return ds.findByIdAndUpdate(id, payload);
     }
 
-
     @PutMapping("/{deviceId}/assign/{employeeId}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public Device assignEmployeeToDevice(@PathVariable Long deviceId, @PathVariable Long employeeId) {
         return ds.assignEmployeeToDevice(deviceId, employeeId);
     }
-
-    // HO TROVATO QUESTO @ResponseEntity CHE RESTITUISCE BODY, HEADER E LO STATO DELLA RISPOSTA, NON LO AVEVO MAI USATO
-    //L' HO PROVATO E SEMBRA FUNZIONARE COME L'ALTRO METODO CHE HO SCRITTO
-//    @PutMapping("/{deviceId}/assign/{employeeId}")
-//    public ResponseEntity<Device> assignDeviceToEmployee(@PathVariable Long deviceId, @PathVariable Long employeeId){
-//        Device updatedDevice = ds.assignEmployeeToDevice(deviceId, employeeId);
-//        return ResponseEntity.ok(updatedDevice);
-//    }
 }
