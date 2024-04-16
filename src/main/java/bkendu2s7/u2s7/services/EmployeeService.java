@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,6 +27,9 @@ public class EmployeeService {
     @Autowired
     private Cloudinary cloudinaryUploader;
 
+    @Autowired
+    private PasswordEncoder bcrypt;
+
     public Employee save(EmployeeDTO emp){
         this.eDAO.findByEmail(emp.email()).ifPresent(
                 employee -> {throw new BadRequestException("L'email " + emp.email() + " è già in uso!");
@@ -36,7 +40,7 @@ public class EmployeeService {
                 emp.name(),
                 emp.surname(),
                 emp.email(),
-                emp.password(),
+                bcrypt.encode(emp.password()),
                 "https://ui-avatars.com/api/?name=" + emp.name() + "+" + emp.surname()
         );
                 return eDAO.save(newEmployee);
@@ -57,13 +61,14 @@ public class EmployeeService {
         eDAO.delete(found);
     }
 
-    public Employee findByIdAndUpdate(long id, EmployeeDTO newEmployee) {
+    public Employee findByIdAndUpdate(long id, Employee newEmployee) {
         Employee found = this.findById(id);
-        found.setAvatar("https://ui-avatars.com/api/?name=" + newEmployee.name() + "+" + newEmployee.surname());
-        found.setUsername(newEmployee.username());
-        found.setName(newEmployee.name());
-        found.setSurname(newEmployee.surname());
-        found.setEmail(newEmployee.email());
+        found.setAvatar("https://ui-avatars.com/api/?name=" + newEmployee.getName() + "+" + newEmployee.getSurname());
+        found.setUsername(newEmployee.getUsername());
+        found.setName(newEmployee.getName());
+        found.setSurname(newEmployee.getSurname());
+        found.setEmail(newEmployee.getEmail());
+        found.setPassword(newEmployee.getPassword());
         eDAO.save(found);
         return found;
     }
